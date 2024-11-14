@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://cis5jpra7diaj"]
+
+[ext_resource type="Script" path="res://addons/multimesh_plugin/FoundMeshRow.cs" id="1_nxf2s"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bkd5n"]
+size = Vector2(128, 128)
+
+[node name="FoundMeshRow" type="HBoxContainer"]
+offset_top = 508.0
+offset_right = 1920.0
+offset_bottom = 572.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+script = ExtResource("1_nxf2s")
+
+[node name="MeshPreview" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_bkd5n")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="InstanceCount" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Found {x} Instances of this Mesh"
+
+[node name="GenerateMultimeshCheckbox" type="CheckBox" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate Multimesh for this Mesh?"
+
+[node name="GenerateCollisionsCheckbox" type="CheckBox" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate Collisions for this Mesh?"
