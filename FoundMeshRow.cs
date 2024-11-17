@@ -9,10 +9,12 @@ public partial class FoundMeshRow : HBoxContainer
 {
     public bool GenerateMultimesh => _generateMultimeshCheckbox.IsPressed();
     public bool GenerateCollision => _generateCollisionCheckbox.IsPressed();
+    public bool GenerateNavObstacle => _generateNavigationObstacleCheckbox.IsPressed();
 
     private Label _instanceCountLabel;
     private CheckBox _generateCollisionCheckbox;
     private CheckBox _generateMultimeshCheckbox;
+    private CheckBox _generateNavigationObstacleCheckbox;
     private TextureRect _meshPreview;
     
     public override void _Ready()
@@ -20,6 +22,8 @@ public partial class FoundMeshRow : HBoxContainer
         _instanceCountLabel = GetNode<Label>("VBoxContainer/InstanceCount");
         _generateCollisionCheckbox = GetNode<CheckBox>("VBoxContainer/GenerateCollisionsCheckbox");
         _generateMultimeshCheckbox = GetNode<CheckBox>("VBoxContainer/GenerateMultimeshCheckbox");
+        _generateNavigationObstacleCheckbox = GetNode<CheckBox>("VBoxContainer/GenerateNavigationObstacleCheckbox");
+        
         _meshPreview = GetNode<TextureRect>("MeshPreview");
     }
 

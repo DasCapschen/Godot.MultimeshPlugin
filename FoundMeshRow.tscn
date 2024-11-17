@@ -36,3 +36,7 @@ text = "Generate Multimesh for this Mesh?"
 [node name="GenerateCollisionsCheckbox" type="CheckBox" parent="VBoxContainer"]
 layout_mode = 2
 text = "Generate Collisions for this Mesh?"
+
+[node name="GenerateNavigationObstacleCheckbox" type="CheckBox" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate Navigation Obstacle for this Mesh?"

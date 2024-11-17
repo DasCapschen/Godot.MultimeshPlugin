@@ -17,6 +17,7 @@ public partial class ConfirmGenerationDialog : ConfirmationDialog
 
     private Node3D _generatedMultimeshRoot;
     private Node3D _generatedCollisionRoot;
+    private Node3D _generatedObstaclesRoot;
     
     public override void _Ready()
     {
@@ -67,6 +68,11 @@ public partial class ConfirmGenerationDialog : ConfirmationDialog
         RootNode.AddChild(_generatedCollisionRoot);
         _generatedCollisionRoot.Owner = editedSceneRoot;
         _generatedCollisionRoot.SetMeta(nameof(MultimeshInspectorPlugin), true);
+
+        _generatedObstaclesRoot = new Node3D { Name = "Generated Navigation Obstacles" };
+        RootNode.AddChild(_generatedObstaclesRoot);
+        _generatedObstaclesRoot.Owner = editedSceneRoot;
+        _generatedObstaclesRoot.SetMeta(nameof(MultimeshInspectorPlugin), true);
         
         foreach (var (mesh, settings) in _foundMeshSettings)
         {
@@ -78,6 +84,11 @@ public partial class ConfirmGenerationDialog : ConfirmationDialog
             if (settings.GenerateCollision)
             {
                 GenerateCollision(mesh, _foundMeshes[mesh]);
+            }
+
+            if (settings.GenerateNavObstacle)
+            {
+                GenerateNavObstacle(mesh, _foundMeshes[mesh]);
             }
         }
     }
@@ -122,6 +133,44 @@ public partial class ConfirmGenerationDialog : ConfirmationDialog
             
             staticBody.AddChild(collisionShape);
             collisionShape.Owner = editedSceneRoot;
+        }
+    }
+    
+    private void GenerateNavObstacle(Mesh mesh, List<MeshInstance3D> instances)
+    {
+        var editedSceneRoot = GetTree().GetEditedSceneRoot();
+        var triMesh = mesh.CreateTrimeshShape();
+
+        var maxX = triMesh.Data.Max(v => v.X);
+        var minX = triMesh.Data.Min(v => v.X);
+        var maxZ = triMesh.Data.Max(v => v.Z);
+        var minZ = triMesh.Data.Min(v => v.Z);
+        var maxY = triMesh.Data.Max(v => v.Y);
+        var minY = triMesh.Data.Min(v => v.Y);
+        
+        var vertices = new Vector3[]
+        {
+            new Vector3(minX, 0, minZ),
+            new Vector3(maxX, 0, minZ),
+            new Vector3(maxX, 0, maxZ),
+            new Vector3(minX, 0, maxZ),
+        };
+        
+        foreach (var (instance, index) in instances.Enumerate())
+        {
+            // nav obstacle is a weird thing, because translation is applied to vertices, but rotation is not...
+            var obstacle = new NavigationObstacle3D
+            {
+                AffectNavigationMesh = true,
+                CarveNavigationMesh = false,
+                AvoidanceEnabled = false,
+                Vertices = vertices.Select(v => instance.GlobalBasis * v).ToArray(),
+                Height = maxY - minY,
+                GlobalPosition = new Vector3(instance.GlobalPosition.X, instance.GlobalPosition.Y + minY, instance.GlobalPosition.Z)
+            };
+            
+            _generatedObstaclesRoot.AddChild(obstacle);
+            obstacle.Owner = editedSceneRoot;
         }
     }
 }
