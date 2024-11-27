@@ -1,6 +1,6 @@
 #if TOOLS
 using System.Collections.Generic;
-using Game.extensions;
+using MultimeshPlugin.Extensions;
 using Godot;
 
 namespace MultimeshPlugin;
@@ -17,7 +17,7 @@ public partial class MultimeshInspectorPlugin : EditorInspectorPlugin
     {
 	    var controlScene = GD.Load<PackedScene>("res://addons/multimesh_plugin/GenerateButton.tscn");
 	    var control = controlScene.Instantiate<ScanForMeshes>();
-	    control.RootNode = obj as Node3D;
+	    control.RootNode = (Node3D)obj;
 	    
         AddCustomControl(control);
     }

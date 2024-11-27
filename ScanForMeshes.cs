@@ -1,6 +1,6 @@
 #if TOOLS
 using System.Collections.Generic;
-using Game.extensions;
+using MultimeshPlugin.Extensions;
 using Godot;
 
 namespace MultimeshPlugin;
@@ -8,7 +8,7 @@ namespace MultimeshPlugin;
 [Tool]
 public partial class ScanForMeshes : Button
 {
-    public Node3D RootNode { get; set; }
+    public Node3D? RootNode { get; set; }
     
     public override void _Ready()
     {

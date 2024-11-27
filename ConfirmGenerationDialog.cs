@@ -2,14 +2,14 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-using Game.extensions;
+using MultimeshPlugin.Extensions;
 
 namespace MultimeshPlugin;
 
 [Tool]
 public partial class ConfirmGenerationDialog : ConfirmationDialog
 {
-    public Node3D RootNode { get; set; }
+    public Node3D? RootNode { get; set; }
     
     private Control _container;
     private Dictionary<Mesh, List<MeshInstance3D>> _foundMeshes;
